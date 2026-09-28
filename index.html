@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalogue Artiemaster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="logo">A</div>
+    <div>
+      <div class="brand-name">Catalogue Artiemaster</div>
+      <div class="brand-sub">Fournisseur textile · traduit et réorganisé</div>
+    </div>
+  </div>
+  <div class="search">
+    <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M10 2a8 8 0 0 1 6.32 12.9l5.39 5.4-1.41 1.4-5.4-5.39A8 8 0 1 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg>
+    <input id="q" type="search" placeholder="Rechercher : référence (8805), « hoodie », « batik », « 275 »…" autocomplete="off">
+  </div>
+  <div class="top-actions">
+    <button class="btn ghost" id="btnGloss">Lexique</button>
+    <button class="btn" id="btnSel">Ma sélection <span class="badge" id="selCount">0</span></button>
+  </div>
+</header>
+
+<nav class="types" id="types"></nav>
+
+<div class="layout">
+  <aside class="filters" id="filters">
+    <div class="filters-head">
+      <strong>Filtres</strong>
+      <button class="link" id="reset">Tout effacer</button>
+    </div>
+    <div class="fgroup">
+      <div class="ftitle">Collection</div>
+      <div id="fSeason"></div>
+    </div>
+    <div class="fgroup">
+      <div class="ftitle">Caractéristiques</div>
+      <label class="chk"><input type="checkbox" data-flag="basic"> Basiques unis <small>idéal pour logo</small></label>
+      <label class="chk"><input type="checkbox" data-flag="best"> Best-sellers / stock permanent</label>
+      <label class="chk"><input type="checkbox" data-flag="printed"> Déjà imprimés</label>
+      <label class="chk"><input type="checkbox" data-flag="noprint"> Sans imprimé</label>
+      <label class="chk"><input type="checkbox" data-flag="women"> Coupe femme</label>
+      <label class="chk"><input type="checkbox" data-flag="set"> Fait partie d'un ensemble</label>
+    </div>
+    <div class="fgroup">
+      <div class="ftitle">Épaisseur (grammage)</div>
+      <div id="fWeight"></div>
+    </div>
+    <div class="fgroup">
+      <div class="ftitle">Personnalisation</div>
+      <label class="chk"><input type="checkbox" data-flag="c30"> Logo / DTG dès 30 pièces</label>
+      <label class="chk"><input type="checkbox" data-flag="c50"> Sérigraphie / broderie dès 50</label>
+    </div>
+    <div class="fgroup">
+      <div class="ftitle">Coloris disponibles</div>
+      <div id="fColors"></div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="bar">
+      <button class="btn ghost only-mobile" id="btnFilters">Filtres</button>
+      <div id="count" class="count"></div>
+      <div class="active" id="active"></div>
+      <select id="sort">
+        <option value="order">Ordre du fournisseur</option>
+        <option value="ref">Référence</option>
+        <option value="wdesc">Plus épais d'abord</option>
+        <option value="wasc">Plus léger d'abord</option>
+        <option value="colors">Plus de coloris</option>
+      </select>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>Aucun produit ne correspond. <button class="link" id="reset2">Effacer les filtres</button></div>
+  </main>
+</div>
+
+<!-- Fiche produit -->
+<div class="modal" id="modal" hidden>
+  <div class="scrim" data-close></div>
+  <div class="sheet" role="dialog" aria-modal="true">
+    <button class="x" data-close aria-label="Fermer">×</button>
+    <div class="pd">
+      <div class="gallery">
+        <div class="main-img">
+          <img id="gImg" alt="">
+          <button class="nav prev" id="gPrev" aria-label="Photo précédente">‹</button>
+          <button class="nav next" id="gNext" aria-label="Photo suivante">›</button>
+          <div class="gcount" id="gCount"></div>
+        </div>
+        <div class="thumbs" id="gThumbs"></div>
+      </div>
+      <div class="info" id="info"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Sélection -->
+<div class="modal" id="selModal" hidden>
+  <div class="scrim" data-close></div>
+  <div class="sheet narrow" role="dialog" aria-modal="true">
+    <button class="x" data-close aria-label="Fermer">×</button>
+    <h2>Ma sélection</h2>
+    <p class="muted">Les produits que tu as mis de côté (enregistrés dans ce navigateur). Le bouton « Copier pour le fournisseur » copie les références avec leur nom chinois d'origine, prêtes à coller dans WeChat.</p>
+    <div id="selList"></div>
+    <div class="sel-actions">
+      <button class="btn" id="copySel">Copier pour le fournisseur</button>
+      <button class="btn ghost" id="showSel">Afficher dans la grille</button>
+      <button class="btn ghost danger" id="clearSel">Vider</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lexique -->
+<div class="modal" id="glossModal" hidden>
+  <div class="scrim" data-close></div>
+  <div class="sheet narrow" role="dialog" aria-modal="true">
+    <button class="x" data-close aria-label="Fermer">×</button>
+    <h2>Lexique</h2>
+    <dl class="gloss">
+      <dt>Snow wash <span>炒雪花</span></dt><dd>Délavage qui laisse des taches claires façon « flocons », aspect vintage.</dd>
+      <dt>Monkey wash <span>喷马骝</span></dt><dd>Décoloration projetée au pistolet sur certaines zones, effet usé irrégulier.</dd>
+      <dt>Batik <span>蜡染</span></dt><dd>Teinture en bain qui donne un rendu nuancé et marbré, souvent délavé.</dd>
+      <dt>Envers délavé <span>反底炒色</span></dt><dd>Tissu utilisé côté envers puis délavé : couleur passée, texture brute.</dd>
+      <dt>Dirty wash <span>脏染</span></dt><dd>Teinture « sale » volontaire, rendu grisé et vieilli.</dd>
+      <dt>Couleurs FOG <span>FOG色</span></dt><dd>Palette de tons neutres et poudrés inspirée de la marque Fear of God.</dd>
+      <dt>Boxy <span>短宽</span></dt><dd>Coupe courte et large, carrée.</dd>
+      <dt>Manches froncées <span>堆袖</span></dt><dd>Manches très longues qui se plissent sur l'avant-bras.</dd>
+      <dt>Effet 2-en-1 <span>假两件</span></dt><dd>Faux superposé : un seul vêtement qui imite un t-shirt porté sur un manches longues.</dd>
+      <dt>Bords francs / usés <span>散边 / 磨边</span></dt><dd>Finitions brutes ou volontairement abîmées au col, aux manches et au bas.</dd>
+      <dt>Molleton bouclette <span>毛圈</span></dt><dd>Molleton non gratté (French terry), classique des sweats et joggings.</dd>
+      <dt>Molletonné <span>加绒</span></dt><dd>Intérieur gratté/doublé, plus chaud, pour l'hiver.</dd>
+      <dt>Coton flammé <span>竹节棉</span></dt><dd>Fil irrégulier (slub) qui donne une texture légèrement bosselée.</dd>
+      <dt>Gaufré <span>华夫格</span></dt><dd>Maille en nid d'abeille (waffle).</dd>
+      <dt>Grammage</dt><dd>Poids du tissu en g/m² : &lt; 220 g léger, 220–300 g standard, &gt; 300 g épais.</dd>
+      <dt>DTG / impression directe <span>直喷</span></dt><dd>Impression numérique directe sur le textile, idéale pour petites séries et visuels détaillés.</dd>
+      <dt>Transfert <span>烫图</span></dt><dd>Visuel imprimé puis thermocollé.</dd>
+      <dt>Sérigraphie <span>丝印</span></dt><dd>Impression au cadre, rentable dès quelques dizaines de pièces, très durable.</dd>
+      <dt>Changement d'étiquette <span>换标</span></dt><dd>Le fournisseur remplace son étiquette par celle de ton client.</dd>
+      <dt>T-shirt de base <span>底衫</span></dt><dd>Le modèle uni sur lequel un imprimé est réalisé. Utile pour commander la version vierge.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
