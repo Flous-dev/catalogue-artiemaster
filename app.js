@@ -164,7 +164,8 @@
       <dl class="specs">${specs.map(([k, v]) => `<dt>${k}</dt><dd>${k === 'T-shirt de base' ? v : esc(v)}</dd>`).join('')}</dl>
       ${p.colors.length ? `<div class="sec"><h3>${p.colors.length} coloris</h3><div class="colors">${p.colors.map(c => `<span>${esc(c)}</span>`).join('')}</div></div>` : ''}
       ${p.sets.length ? `<div class="sec"><h3>Se porte en ensemble avec</h3><div class="chips">${p.sets.map(([r, id]) => `<a href="#" data-open="${id}">${esc(r)} · ${esc(byId[id]?.type || '')}</a>`).join('')}</div></div>` : ''}
-      ${p.custom.length ? `<div class="sec"><h3>Personnalisation proposée par le fournisseur</h3><ul class="custom">${p.custom.map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>` : ''}
+      ${p.custom.length ? `<div class="sec"><h3>Minimums de commande</h3><ul class="custom">${p.custom.map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>` : ''}
+      <p class="price-note"><strong>Prix :</strong> non publié par le fournisseur, à demander sur WeChat (bouton « Copier » ci-dessus pour la référence).</p>
       <div class="actions">
         <button class="btn" data-fav="${p.id}">${inSel ? '♥ Dans ma sélection' : '♡ Ajouter à ma sélection'}</button>
         <a class="btn ghost" href="${ALBUM(p.id)}" target="_blank" rel="noopener">Album d'origine (${p.n} photos)</a>

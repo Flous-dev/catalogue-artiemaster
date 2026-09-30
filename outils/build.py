@@ -80,7 +80,7 @@ for i,p in enumerate(d['prods']):
     ref=m.group(1) if m else ''
     f=dict(colors=[],sizes='',fabric='',weight='',base='',custom=[],notes=[])
     for l in desc.split('\n'):
-        mm=re.match(r'\s*([^：:]{1,14})[：:]\s*(.*)',l)
+        mm=re.match(r'\s*([^：:]{1,20})[：:]\s*(.*)',l)
         if not mm: continue
         k,v=mm.group(1).strip(),mm.group(2).strip()
         if k.endswith('颜色') and v and not f['colors']:

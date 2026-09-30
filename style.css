@@ -170,3 +170,5 @@ details pre{white-space:pre-wrap;font:13px/1.6 inherit;font-family:inherit;color
   .sheet{border-radius:0;max-height:100vh;height:100%}
   .info{padding:20px 16px}
 }
+
+.price-note{margin:14px 0 0;padding:10px 12px;border-radius:10px;background:var(--chip);font-size:14px}
